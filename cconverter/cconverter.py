@@ -1,14 +1,19 @@
+from json import loads
+
+from requests import get
+
 if __name__ == '__main__':
 
-    conicoins_converter = {
-        "RUB": 2.98,
-        "ARS": 0.82,
-        "HNL": 0.17,
-        "AUD": 1.9622,
-        "MAD": 0.208
-    }
+    while True:
+        try:
+            currency_code = input()
+            message = "Your input is does not look like a currency Code. Please try again:"
+            assert (len(currency_code) == 3 and currency_code.isupper()), message
+        except Exception as err:
+            print(err)
+        else:
+            break
+    URL = f'http://www.floatrates.com/daily/{currency_code}.json'
+    conversion_code = loads(get(URL).text)
 
-    coins = input()
-    coins = float(coins)
-    for currency, rate in conicoins_converter.items():
-        print(f'I will get {round(coins * rate, 2)} {currency} from the sale of {coins} conicoins.')
+    print(conversion_code['usd'], conversion_code['eur'], sep="\n")
